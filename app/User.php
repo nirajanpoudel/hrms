@@ -38,4 +38,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('App\Repositories\Employee');
 
     }
+    public static function boot(){
+        parent::boot();
+
+        static::creating(function($user){
+            $user->token = str_random(20);
+        });
+    }
+    public function setPasswordAttribute($password){
+        $this->attributes['password'] = bcrypt($password);
+    }
+
 }

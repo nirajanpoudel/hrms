@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(UserTableSeeder::class);
+        DB::table('holidays')->truncate();
+        $this->call(HolidayTableSeeder::class);
 
         Model::reguard();
     }

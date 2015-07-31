@@ -3,26 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repositories\Department;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-class DepartmentController extends Controller
+use App\Holiday;
+use Carbon\Carbon;
+class HolidayController extends Controller
 {
-    protected $department;
+    protected $holiday;
 
-    public function __construct(Department $department){
-        $this->department = $department;
+
+    public function __construct(Holiday $holiday){
+        $this->holiday = $holiday;
     }
+
     /**
      * Display a listing of the resource.
-     *p
+     *
      * @return Response
      */
-    public function index()
-    {
-        $departments = $this->department->all();
-        return view('department.index',compact('departments'));
+    public function index(Request $request)
+    {   
+        $month = $this->getMonth($request);
+       $holidays = $this->holiday->month($month)->get();
+     
+
+       return  $holidays;
+       return view('holiday.index',compact('holidays'));
+    }
+
+    protected function getMonth(Request $request,$month=null){
+        $month = 0;
+        if($request->has('month')){
+                $month = $request->get('month');            
+           }  
+
+        if($month>12 || $month<1){
+               $month = 1;
+           }
+           return $month;
     }
 
     /**
@@ -32,7 +51,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('department.index');
+        //
     }
 
     /**
@@ -43,13 +62,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        $input =  $request->all();
-       // return $input;
-        $this->department->name = $request->name;
-        $this->department->departments = $request->departments;
-
-        $this->department->save();
-        return redirect('departments');
+        //
     }
 
     /**
@@ -60,7 +73,7 @@ class DepartmentController extends Controller
      */
     public function show($id)
     {
-        
+        //
     }
 
     /**
@@ -71,9 +84,7 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        $departments = $this->department->all();
-       $department = $this->department->find($id);
-       return view("department.edit",compact('department','departments'));
+        //
     }
 
     /**
@@ -85,13 +96,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $request->all();
-        
-        $this->department = $this->department->find($id);
-        // $this->department->department->name = $request->name;
-        // $this->department->department->departments = $request->departments;
-        $this->department->update( $input);
-        return redirect('departments');
+        //
     }
 
     /**

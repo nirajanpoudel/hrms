@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+get('register','RegisterController@register');
+post('register','RegisterController@postRegister');
+get('register/confirm/{token}','RegisterController@confirm');
+
+get('about-us',function(){
+
+	return "About Us";
 });
+
+get('/', function () {
+    return view('master');
+	//return "Laravel 5";
+});
+
+get('login','RegisterController@login');
+post('login','RegisterController@postLogin');
+Route::resource('departments','DepartmentController');
+Route::resource('holidays','HolidayController');
